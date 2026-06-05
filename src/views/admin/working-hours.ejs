@@ -1,0 +1,63 @@
+<%- include("../partials/head", { title }) %>
+<%- include("../partials/header") %>
+<%- include("../partials/flash") %>
+
+<main class="page">
+  <section class="card">
+    <div class="dashboard-header">
+      <div>
+        <p class="eyebrow">Admin</p>
+        <h1>Program de lucru</h1>
+        <p>Alege zilele și orele în care frizerul este disponibil pentru programări.</p>
+      </div>
+
+      <a href="/admin/dashboard" class="button">Înapoi la dashboard</a>
+    </div>
+
+    <form action="/admin/program" method="POST" class="working-hours-form">
+      <% days.forEach((day, index) => { %>
+        <article class="working-day-card">
+          <input
+            type="hidden"
+            name="workingDays[<%= index %>][dayOfWeek]"
+            value="<%= day.dayOfWeek %>"
+          />
+
+          <div class="working-day-name">
+            <label class="checkbox-label">
+              <input
+                type="checkbox"
+                name="workingDays[<%= index %>][isWorkingDay]"
+                value="true"
+                <%= day.isWorkingDay ? "checked" : "" %>
+              />
+              <span><%= day.label %></span>
+            </label>
+          </div>
+
+          <label>
+            Început
+            <input
+              type="time"
+              name="workingDays[<%= index %>][startTime]"
+              value="<%= day.startTime %>"
+            />
+          </label>
+
+          <label>
+            Final
+            <input
+              type="time"
+              name="workingDays[<%= index %>][endTime]"
+              value="<%= day.endTime %>"
+            />
+          </label>
+        </article>
+      <% }) %>
+
+      <button type="submit" class="button">Salvează programul</button>
+    </form>
+  </section>
+</main>
+
+<%- include("../partials/footer") %>

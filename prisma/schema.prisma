@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum AppointmentStatus {
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+model Admin {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("admins")
+}
+
+model Service {
+  id              Int           @id @default(autoincrement())
+  name            String
+  description     String?
+  durationMinutes Int           @map("duration_minutes")
+  price           Float
+  isActive        Boolean       @default(true) @map("is_active")
+  appointments    Appointment[]
+
+  @@map("services")
+}
+
+model Appointment {
+  id              Int               @id @default(autoincrement())
+  serviceId       Int               @map("service_id")
+  service         Service           @relation(fields: [serviceId], references: [id])
+  clientName      String            @map("client_name")
+  clientPhone     String            @map("client_phone")
+  clientEmail     String?           @map("client_email")
+  appointmentDate DateTime          @map("appointment_date")
+  startTime       DateTime          @map("start_time")
+  endTime         DateTime          @map("end_time")
+  notes           String?
+  status          AppointmentStatus @default(CONFIRMED)
+  createdAt       DateTime          @default(now()) @map("created_at")
+
+  @@index([appointmentDate])
+  @@map("appointments")
+}
+
+model WorkingHour {
+  id           Int       @id @default(autoincrement())
+  dayOfWeek    Int       @unique @map("day_of_week")
+  startTime    DateTime? @map("start_time")
+  endTime      DateTime? @map("end_time")
+  isWorkingDay Boolean   @default(true) @map("is_working_day")
+
+  @@map("working_hours")
+}
+
+model BlockedSlot {
+  id          Int      @id @default(autoincrement())
+  blockedDate DateTime @map("blocked_date")
+  startTime   DateTime @map("start_time")
+  endTime     DateTime @map("end_time")
+  reason      String?
+
+  @@index([blockedDate])
+  @@map("blocked_slots")
+}

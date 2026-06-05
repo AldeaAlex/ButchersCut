@@ -1,0 +1,58 @@
+<%- include("../partials/head", { title }) %>
+<%- include("../partials/header") %>
+<%- include("../partials/flash") %>
+
+<main class="page">
+  <section class="card">
+    <h1>Programează client</h1>
+    <p>Adaugă manual o programare în calendarul frizerului.</p>
+
+    <form action="/admin/programare-noua" method="POST" class="form">
+      <label>
+        Serviciu
+        <select name="serviceId" required>
+          <option value="">Alege un serviciu</option>
+          <% services.forEach((service) => { %>
+            <option value="<%= service.id %>">
+              <%= service.name %> — <%= service.durationMinutes %> min — <%= service.price %> lei
+            </option>
+          <% }) %>
+        </select>
+      </label>
+
+      <label>
+        Data programării
+        <input type="date" name="appointmentDate" required />
+      </label>
+
+      <label>
+        Ora programării
+        <input type="time" name="startTime" required />
+      </label>
+
+      <label>
+        Nume client
+        <input type="text" name="clientName" required />
+      </label>
+
+      <label>
+        Telefon client
+        <input type="tel" name="clientPhone" required />
+      </label>
+
+      <label>
+        Email opțional
+        <input type="email" name="clientEmail" />
+      </label>
+
+      <label>
+        Notițe opționale
+        <textarea name="notes" rows="4"></textarea>
+      </label>
+
+      <button type="submit" class="button">Salvează programarea</button>
+    </form>
+  </section>
+</main>
+
+<%- include("../partials/footer") %>

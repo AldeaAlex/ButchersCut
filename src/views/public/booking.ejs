@@ -1,0 +1,64 @@
+<%- include("../partials/head", { title }) %>
+<%- include("../partials/header") %>
+<%- include("../partials/flash") %>
+
+<main class="page">
+  <section class="card">
+    <h1>Fă o programare</h1>
+    <p>Alege serviciul, data, ora disponibilă și completează datele tale de contact.</p>
+
+    <form action="/programare" method="POST" class="form">
+      <label>
+        Serviciu
+        <select name="serviceId" id="serviceId" required>
+          <option value="">Alege un serviciu</option>
+          <% services.forEach((service) => { %>
+            <option value="<%= service.id %>">
+              <%= service.name %> — <%= service.durationMinutes %> min — <%= service.price %> lei
+            </option>
+          <% }) %>
+        </select>
+      </label>
+
+      <label>
+        Data programării
+        <input type="date" name="appointmentDate" id="appointmentDate" required />
+      </label>
+
+      <label>
+        Ora disponibilă
+        <select name="startTime" id="startTime" required disabled>
+          <option value="">Alege mai întâi serviciul și data</option>
+        </select>
+      </label>
+
+      <p id="slotsMessage" class="helper-message"></p>
+
+      <label>
+        Nume complet
+        <input type="text" name="clientName" required />
+      </label>
+
+      <label>
+        Telefon
+        <input type="tel" name="clientPhone" required />
+      </label>
+
+      <label>
+        Email opțional
+        <input type="email" name="clientEmail" />
+      </label>
+
+      <label>
+        Notițe opționale
+        <textarea name="notes" rows="4"></textarea>
+      </label>
+
+      <button type="submit" class="button">Trimite programarea</button>
+    </form>
+  </section>
+</main>
+
+<script src="/js/booking.js"></script>
+
+<%- include("../partials/footer") %>

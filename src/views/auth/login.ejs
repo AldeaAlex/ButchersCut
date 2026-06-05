@@ -1,0 +1,25 @@
+<%- include("../partials/head", { title }) %>
+<%- include("../partials/header") %>
+<%- include("../partials/flash") %>
+
+<main class="page">
+  <section class="card small-card">
+    <h1>Admin login</h1>
+
+    <form action="/admin/login" method="POST" class="form">
+      <label>
+        Email
+        <input type="email" name="email" required />
+      </label>
+
+      <label>
+        Parolă
+        <input type="password" name="password" required />
+      </label>
+
+      <button type="submit" class="button">Intră în dashboard</button>
+    </form>
+  </section>
+</main>
+
+<%- include("../partials/footer") %>
