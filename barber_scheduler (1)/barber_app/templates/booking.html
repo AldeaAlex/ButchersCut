@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ shop_name }} — Programări online</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --cream: #F7F4EF; --ink: #1A1410; --ink2: #4A3F35;
+    --gold: #B8872A; --gold-light: #F0DFB8;
+    --white: #FFFFFF; --border: #DDD5C8;
+    --green: #2D6A4F; --green-bg: #D8F3DC;
+    --red: #C0392B; --radius: 12px;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
+
+  header {
+    background: var(--ink); color: var(--white);
+    text-align: center; padding: 2.5rem 1rem 2rem;
+  }
+  .logo-icon { font-size: 2.5rem; margin-bottom: 0.5rem; display: block; }
+  header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem,5vw,2.4rem); font-weight: 600; }
+  header p { font-size: 0.85rem; opacity: 0.55; margin-top: 0.3rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .gold-line { width: 40px; height: 2px; background: var(--gold); margin: 1rem auto 0; }
+
+  .container { max-width: 660px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+
+  .step-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.25rem;
+  }
+  .step-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .step-num {
+    width: 28px; height: 28px; background: var(--ink); color: var(--white);
+    border-radius: 50%; font-size: 0.8rem; font-weight: 500;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .step-header h2 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; }
+
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem; }
+  .svc-btn {
+    border: 1.5px solid var(--border); background: none; border-radius: 10px;
+    padding: 0.85rem 0.75rem; cursor: pointer; text-align: center;
+    transition: all 0.15s; font-family: 'DM Sans', sans-serif;
+  }
+  .svc-btn:hover { border-color: var(--gold); background: var(--gold-light); }
+  .svc-btn.selected { border-color: var(--gold); background: var(--gold-light); box-shadow: 0 0 0 1px var(--gold); }
+  .svc-name { font-weight: 500; font-size: 0.88rem; color: var(--ink); display: block; margin-bottom: 0.3rem; }
+  .svc-meta { font-size: 0.78rem; color: var(--ink2); }
+
+  input[type=date] {
+    width: 100%; padding: 0.75rem 1rem;
+    border: 1.5px solid var(--border); border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 1rem;
+    color: var(--ink); background: var(--white); cursor: pointer; outline: none;
+    transition: border-color 0.15s;
+  }
+  input[type=date]:focus { border-color: var(--gold); }
+
+  .slots-wrap { margin-top: 1.25rem; }
+  .slots-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+  .slot-btn {
+    padding: 0.5rem 1rem; border: 1.5px solid var(--border); border-radius: 8px;
+    background: none; font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    cursor: pointer; color: var(--ink); transition: all 0.15s;
+  }
+  .slot-btn:hover { border-color: var(--gold); background: var(--gold-light); }
+  .slot-btn.selected { border-color: var(--gold); background: var(--gold); color: var(--white); font-weight: 500; }
+  .no-slots { color: var(--ink2); font-size: 0.9rem; padding: 0.5rem 0; }
+  .closed-day {
+    display: flex; align-items: center; gap: 0.6rem;
+    background: #FFF3F3; border: 1px solid #F5C6C6;
+    border-radius: 9px; padding: 0.75rem 1rem;
+    color: #8B2020; font-size: 0.88rem; font-weight: 500;
+    margin-top: 0.75rem;
+  }
+  .closed-day .icon { font-size: 1.1rem; }
+
+  label.field-label { display: block; font-size: 0.85rem; font-weight: 500; color: var(--ink2); margin-bottom: 0.4rem; }
+  input[type=text], input[type=tel] {
+    width: 100%; padding: 0.75rem 1rem;
+    border: 1.5px solid var(--border); border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+    color: var(--ink); background: var(--white); outline: none;
+    transition: border-color 0.15s; margin-bottom: 1rem;
+  }
+  input[type=text]:focus, input[type=tel]:focus { border-color: var(--gold); }
+
+  .summary-bar {
+    background: var(--gold-light); border: 1px solid var(--gold);
+    border-radius: 10px; padding: 0.85rem 1rem; font-size: 0.88rem;
+    color: var(--ink2); margin-bottom: 1.25rem; display: none;
+  }
+  .summary-bar strong { color: var(--ink); }
+
+  /* GDPR consent */
+  .gdpr-box {
+    border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 1rem; margin-bottom: 1.25rem; background: #FAFAF8;
+    display: flex; gap: 0.75rem; align-items: flex-start;
+  }
+  .gdpr-box input[type=checkbox] {
+    width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0;
+    accent-color: var(--gold); cursor: pointer;
+  }
+  .gdpr-box label { font-size: 0.85rem; color: var(--ink2); cursor: pointer; line-height: 1.5; }
+  .gdpr-box a { color: var(--gold); text-decoration: none; font-weight: 500; }
+  .gdpr-box a:hover { text-decoration: underline; }
+
+  .book-btn {
+    width: 100%; padding: 1rem; background: var(--ink); color: var(--white);
+    border: none; border-radius: 10px; font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 600; cursor: pointer; transition: background 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .book-btn:hover { background: #2D2520; }
+  .book-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  .error-msg { color: var(--red); font-size: 0.88rem; margin-top: 0.5rem; }
+
+  /* Success overlay */
+  .success-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(26,20,16,0.7); z-index: 100;
+    align-items: center; justify-content: center; padding: 1rem;
+  }
+  .success-overlay.show { display: flex; }
+  .success-box {
+    background: var(--white); border-radius: 16px; padding: 2.5rem 2rem;
+    max-width: 380px; width: 100%; text-align: center;
+  }
+  .success-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .success-box h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 0.5rem; }
+  .success-box p { color: var(--ink2); font-size: 0.9rem; margin-bottom: 0.5rem; }
+  .success-note { font-size: 0.82rem; color: var(--ink2); margin-bottom: 1.5rem; opacity: 0.8; }
+  .close-success {
+    display: block; width: 100%; padding: 0.85rem;
+    background: var(--ink); color: white; border: none;
+    border-radius: 10px; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 500;
+  }
+
+  .loading { opacity: 0.6; font-size: 0.88rem; color: var(--ink2); }
+
+  footer {
+    text-align: center; padding: 2rem 1rem;
+    font-size: 0.78rem; color: var(--ink2); opacity: 0.7;
+  }
+  footer a { color: var(--ink2); text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo-icon">✂️</span>
+  <h1>{{ shop_name }}</h1>
+  <p>Programează-te online</p>
+  <div class="gold-line"></div>
+</header>
+
+<div class="container">
+
+  <!-- Step 1 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <h2>Alege serviciul</h2>
+    </div>
+    <div class="services-grid">
+      {% for s in services %}
+      <button class="svc-btn" onclick="selectService({{ s.id }}, this)">
+        <span class="svc-name">{{ s.name }}</span>
+        <span class="svc-meta">{{ s.duration }} min · {{ s.price }} lei</span>
+      </button>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <h2>Alege data și ora</h2>
+    </div>
+    <input type="date" id="datePicker" onchange="loadSlots()" />
+    <div class="slots-wrap" id="slotsWrap" style="display:none">
+      <label class="field-label">Ore disponibile</label>
+      <div class="slots-grid" id="slotsGrid"></div>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <h2>Datele tale</h2>
+    </div>
+    <div class="summary-bar" id="summaryBar"></div>
+    <label class="field-label">Nume și prenume</label>
+    <input type="text" id="clientName" placeholder="Ion Popescu" />
+    <label class="field-label">Număr de telefon</label>
+    <input type="tel" id="clientPhone" placeholder="07XX XXX XXX" />
+
+    <div class="gdpr-box">
+      <input type="checkbox" id="gdprCheck" />
+      <label for="gdprCheck">
+        Am citit și sunt de acord cu
+        <a href="/confidentialitate" target="_blank">Politica de confidențialitate</a>.
+        Înțeleg că datele mele (nume, telefon) vor fi folosite exclusiv pentru gestionarea programării
+        și vor fi șterse automat după 6 luni.
+      </label>
+    </div>
+
+    <div class="error-msg" id="errorMsg"></div>
+    <button class="book-btn" onclick="bookAppointment()">Confirmă programarea</button>
+  </div>
+
+</div>
+
+<footer>
+  <a href="/confidentialitate">Politica de confidențialitate</a> &nbsp;·&nbsp;
+  {{ shop_name }}, Barcani, jud. Covasna
+</footer>
+
+<!-- Success modal -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-box">
+    <div class="success-icon">🎉</div>
+    <h2>Programare confirmată!</h2>
+    <p id="successDetails"></p>
+    <p class="success-note">Te așteptăm la {{ shop_name }}!<br>Dacă ai nevoie să anulezi, te rugăm să ne contactezi.</p>
+    <button class="close-success" onclick="location.reload()">Închide</button>
+  </div>
+</div>
+
+<script>
+  // Set today as minimum date
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('datePicker').min = today;
+  document.getElementById('datePicker').value = today;
+
+  let selectedService = null;
+  let selectedSlot = null;
+
+  function selectService(id, el) {
+    document.querySelectorAll('.svc-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedService = id;
+    selectedSlot = null;
+    loadSlots();
+    updateSummary();
+  }
+
+  async function loadSlots() {
+    const date = document.getElementById('datePicker').value;
+    if (!date || !selectedService) return;
+    const wrap = document.getElementById('slotsWrap');
+    const grid = document.getElementById('slotsGrid');
+    wrap.style.display = 'block';
+    grid.innerHTML = '<span class="loading">Se încarcă...</span>';
+    selectedSlot = null;
+    updateSummary();
+    const res  = await fetch(`/api/slots?date=${date}&service_id=${selectedService}`);
+    const data = await res.json();
+    grid.innerHTML = '';
+    if (data.closed) {
+      grid.innerHTML = '<div class="closed-day"><span class="icon">🔒</span> Salonul este închis în această zi.</div>';
+      return;
+    }
+    if (!data.slots.length) {
+      grid.innerHTML = '<span class="no-slots">Nu sunt ore disponibile în această zi. Încearcă altă dată.</span>';
+      return;
+    }
+    data.slots.forEach(slot => {
+      const btn = document.createElement('button');
+      btn.className = 'slot-btn';
+      btn.textContent = slot;
+      btn.onclick = () => {
+        document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedSlot = slot;
+        updateSummary();
+      };
+      grid.appendChild(btn);
+    });
+  }
+
+  function updateSummary() {
+    const bar    = document.getElementById('summaryBar');
+    const svcBtn = document.querySelector('.svc-btn.selected');
+    const date   = document.getElementById('datePicker').value;
+    if (svcBtn && selectedSlot && date) {
+      bar.innerHTML = `<strong>${svcBtn.querySelector('.svc-name').textContent}</strong> · ${date} la ${selectedSlot}`;
+      bar.style.display = 'block';
+    } else {
+      bar.style.display = 'none';
+    }
+  }
+
+  async function bookAppointment() {
+    const name    = document.getElementById('clientName').value.trim();
+    const phone   = document.getElementById('clientPhone').value.trim();
+    const date    = document.getElementById('datePicker').value;
+    const consent = document.getElementById('gdprCheck').checked;
+    const err     = document.getElementById('errorMsg');
+    err.textContent = '';
+
+    if (!selectedService) return err.textContent = 'Te rugăm să alegi un serviciu.';
+    if (!selectedSlot)    return err.textContent = 'Te rugăm să alegi o oră.';
+    if (!name)            return err.textContent = 'Te rugăm să introduci numele.';
+    if (!phone)           return err.textContent = 'Te rugăm să introduci numărul de telefon.';
+    if (!consent)         return err.textContent = 'Trebuie să accepți politica de confidențialitate pentru a continua.';
+
+    const res  = await fetch('/api/book', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ name, phone, service_id: selectedService, date, time: selectedSlot, gdpr_consent: true })
+    });
+    const data = await res.json();
+    if (!data.ok) return err.textContent = data.error;
+
+    document.getElementById('successDetails').textContent =
+      `${data.service} · ${data.date} la ${data.time}`;
+    document.getElementById('successOverlay').classList.add('show');
+  }
+</script>
+</body>
+</html>

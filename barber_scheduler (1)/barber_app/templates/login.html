@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — {{ shop_name }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #1A1410;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .card {
+    background: #F7F4EF;
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    max-width: 360px;
+    width: 100%;
+    text-align: center;
+  }
+  .icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  h1 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #1A1410; margin-bottom: 0.3rem; }
+  p { color: #4A3F35; font-size: 0.9rem; margin-bottom: 2rem; }
+  input[type=password] {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1.5px solid #DDD5C8;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    outline: none;
+    color: #1A1410;
+  }
+  input:focus { border-color: #B8872A; }
+  button {
+    width: 100%;
+    padding: 0.9rem;
+    background: #1A1410;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .error { color: #C0392B; font-size: 0.88rem; margin-bottom: 1rem; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="icon">🔐</div>
+  <h1>Panou Admin</h1>
+  <p>{{ shop_name }}</p>
+  {% if error %}<div class="error">{{ error }}</div>{% endif %}
+  <form method="POST">
+    <input type="password" name="password" placeholder="Parolă admin" autofocus />
+    <button type="submit">Intră în cont</button>
+  </form>
+</div>
+</body>
+</html>
