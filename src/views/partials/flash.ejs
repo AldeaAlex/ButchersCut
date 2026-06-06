@@ -1,9 +1,0 @@
-<% if (messages && Object.keys(messages).length > 0) { %>
-  <div class="flash-list">
-    <% Object.entries(messages).forEach(([type, list]) => { %>
-      <% list.forEach((message) => { %>
-        <p class="flash flash-<%= type %>"><%= message %></p>
-      <% }) %>
-    <% }) %>
-  </div>
-<% } %>
