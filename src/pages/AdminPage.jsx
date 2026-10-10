@@ -46,25 +46,25 @@ export default function AdminPage({
   }
 
   return (
-    <div className="py-6 sm:py-10 px-3 sm:px-6 max-w-6xl mx-auto w-full space-y-6 sm:space-y-8">
+    <div className="py-5 sm:py-10 px-3 sm:px-6 max-w-6xl mx-auto w-full space-y-5 sm:space-y-8 overflow-x-hidden">
       {/* Top Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
-        <div className="flex items-center gap-3.5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5 sm:pb-6">
+        <div className="flex items-center gap-3 sm:gap-3.5 min-w-0 flex-1">
           <button
             onClick={onBack}
-            className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:text-white hover:border-[#c59d5f] hover:bg-[#c59d5f]/10 transition-all cursor-pointer"
+            className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:text-white hover:border-[#c59d5f] hover:bg-[#c59d5f]/10 transition-all cursor-pointer shrink-0"
             title="Înapoi la Site"
           >
             <ArrowLeft size={18} />
           </button>
-          <div>
+          <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
               <ButchersCutLogo size={18} />
               <span className="text-[10px] tracking-[0.25em] text-[#c59d5f] uppercase font-bold">
                 BUTCHER'S CUT
               </span>
             </div>
-            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-white leading-tight">
+            <h1 className="font-serif text-xl sm:text-3xl font-bold text-white leading-tight truncate sm:whitespace-normal">
               Dashboard Administrativ
             </h1>
             <div className="flex items-center gap-2 mt-1">
@@ -103,7 +103,7 @@ export default function AdminPage({
       <StatsCards appointments={appointments} />
 
       {/* Navigation Tabs for All Initial Admin Sections */}
-      <div className="flex border-b border-white/10 bg-[#161616] p-1 rounded-sm text-xs uppercase tracking-wider overflow-x-auto gap-1 scrollbar-none">
+      <div className="flex border-b border-white/10 bg-[#161616] p-1 rounded-sm text-xs uppercase tracking-wider overflow-x-auto gap-1 scrollbar-none w-full max-w-full">
         <button
           onClick={() => setActiveTab('appointments')}
           className={`py-2 px-3 sm:py-2.5 sm:px-5 rounded-sm font-semibold transition-all cursor-pointer flex items-center gap-1.5 sm:gap-2 whitespace-nowrap shrink-0 active:scale-95 text-[11px] sm:text-xs ${
@@ -161,7 +161,7 @@ export default function AdminPage({
       </div>
 
       {/* Tab Contents */}
-      <div className="pt-2">
+      <div className="pt-2 w-full max-w-full min-w-0">
         {activeTab === 'appointments' && (
           <AppointmentsList
             appointments={appointments}

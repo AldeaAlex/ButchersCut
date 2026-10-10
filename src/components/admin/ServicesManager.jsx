@@ -58,14 +58,14 @@ export default function ServicesManager({ services = [], onAddService, onUpdateS
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8 w-full">
       {/* Secțiunea 1: Adăugare Serviciu Nou */}
-      <div className="bg-[#181818] border border-white/10 rounded-sm p-6 sm:p-8 shadow-xl">
-        <div className="border-b border-white/10 pb-4 mb-6">
+      <div className="bg-[#181818] border border-white/10 rounded-sm p-4 sm:p-8 shadow-xl w-full">
+        <div className="border-b border-white/10 pb-4 mb-5 sm:mb-6">
           <div className="flex items-center gap-2 text-[#c59d5f] text-xs font-semibold uppercase tracking-wider mb-1">
             <Plus size={15} /> Configurare
           </div>
-          <h3 className="font-serif text-2xl font-bold text-white">
+          <h3 className="font-serif text-xl sm:text-2xl font-bold text-white">
             Adaugă serviciu nou
           </h3>
           <p className="text-xs text-gray-400 mt-1 font-light">
@@ -85,7 +85,7 @@ export default function ServicesManager({ services = [], onAddService, onUpdateS
                 placeholder="Ex: Tuns + Spălat + Barbă"
                 value={newServiceName}
                 onChange={(e) => setNewServiceName(e.target.value)}
-                className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-sm text-white focus:outline-none focus:border-[#c59d5f]"
+                className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-base sm:text-sm text-white focus:outline-none focus:border-[#c59d5f] min-h-[44px]"
               />
             </div>
 
@@ -101,7 +101,7 @@ export default function ServicesManager({ services = [], onAddService, onUpdateS
                   required
                   value={newServiceDuration}
                   onChange={(e) => setNewServiceDuration(e.target.value)}
-                  className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-sm text-white focus:outline-none focus:border-[#c59d5f]"
+                  className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-base sm:text-sm text-white focus:outline-none focus:border-[#c59d5f] min-h-[44px]"
                 />
               </div>
 
@@ -116,7 +116,7 @@ export default function ServicesManager({ services = [], onAddService, onUpdateS
                   required
                   value={newServicePrice}
                   onChange={(e) => setNewServicePrice(e.target.value)}
-                  className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-sm text-white focus:outline-none focus:border-[#c59d5f]"
+                  className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-base sm:text-sm text-white focus:outline-none focus:border-[#c59d5f] min-h-[44px]"
                 />
               </div>
             </div>
@@ -131,10 +131,9 @@ export default function ServicesManager({ services = [], onAddService, onUpdateS
               placeholder="Ex: Tuns complet, aranjat barbă cu prosop cald și finisare..."
               value={newServiceDesc}
               onChange={(e) => setNewServiceDesc(e.target.value)}
-              className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-sm text-white focus:outline-none focus:border-[#c59d5f]"
+              className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-base sm:text-sm text-white focus:outline-none focus:border-[#c59d5f] min-h-[44px]"
             />
           </div>
-
           <div className="pt-2">
             <PrimaryButton type="submit" size="sm">
               <Plus size={15} className="mr-1.5" /> ADAUGĂ SERVICIUL
@@ -235,15 +234,15 @@ export default function ServicesManager({ services = [], onAddService, onUpdateS
                     </div>
                   </div>
                 ) : (
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-                    <div>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 min-w-0">
+                    <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
                         <Scissors size={14} className="text-[#c59d5f] -rotate-45 shrink-0" />
-                        <h4 className="font-serif text-base sm:text-lg font-bold text-white">
+                        <h4 className="font-serif text-base sm:text-lg font-bold text-white break-words">
                           {srv.name}
                         </h4>
                         <span
-                          className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded font-semibold ${
+                          className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded font-semibold shrink-0 ${
                             isActive
                               ? 'bg-emerald-950 text-emerald-400 border border-emerald-800/40'
                               : 'bg-gray-800 text-gray-400'
@@ -252,12 +251,12 @@ export default function ServicesManager({ services = [], onAddService, onUpdateS
                           {isActive ? 'Activ' : 'Inactiv'}
                         </span>
                       </div>
-                      <p className="text-xs text-gray-400 mt-1 font-light">
+                      <p className="text-xs text-gray-400 mt-1 font-light break-words">
                         {srv.description || 'Fără descriere specificată.'}
                       </p>
                     </div>
 
-                    <div className="flex items-center justify-between sm:justify-end gap-4 border-t sm:border-t-0 border-white/5 pt-2 sm:pt-0">
+                    <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 border-t sm:border-t-0 border-white/5 pt-2 sm:pt-0 shrink-0">
                       <div className="text-left sm:text-right">
                         <span className="font-serif text-lg sm:text-xl font-bold text-[#c59d5f] block leading-none">
                           {srv.price} lei

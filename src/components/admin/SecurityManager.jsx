@@ -139,18 +139,18 @@ export default function SecurityManager() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full">
       {/* 1. Secțiune Link Secret Anti-Detectare */}
-      <div className="bg-[#181818] border border-white/10 rounded-sm p-6 sm:p-8 shadow-xl">
-        <div className="border-b border-white/10 pb-4 mb-6">
+      <div className="bg-[#181818] border border-white/10 rounded-sm p-4 sm:p-8 shadow-xl w-full">
+        <div className="border-b border-white/10 pb-4 mb-5 sm:mb-6">
           <div className="flex items-center gap-2 text-[#c59d5f] text-xs font-semibold uppercase tracking-wider mb-1">
             <EyeOff size={15} /> Protecție Acces & Ascundere Panou
           </div>
-          <h3 className="font-serif text-2xl font-bold text-white">
+          <h3 className="font-serif text-xl sm:text-2xl font-bold text-white">
             Link Secret de Acces (Anti-Clienți)
           </h3>
           <p className="text-xs text-gray-400 mt-1 font-light leading-relaxed">
-            Pentru a împiedica clienții să găsească panoul, ruta generică <code className="text-red-400 font-mono">/admin</code> este dezactivată și redirecționează pe prima pagină. Panoul poate fi accesat doar prin linkul tău secret sau gestul discret de pe mobil.
+            Pentru a împiedica clienții să găsească panoul, ruta generică <code className="text-red-400 font-mono">/admin</code> este dezactivată și redirecționează pe prima pagină. Panoul poate fi accesat doar prin linkul tău secret.
           </p>
         </div>
 
@@ -162,19 +162,19 @@ export default function SecurityManager() {
         )}
 
         {/* Display Current Secret Link */}
-        <div className="p-4 rounded bg-[#141414] border border-white/10 space-y-3 mb-6">
+        <div className="p-3.5 sm:p-4 rounded bg-[#141414] border border-white/10 space-y-3 mb-6 w-full">
           <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold block">
             Adresa secretă a panoului tău:
           </span>
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
-            <div className="flex-1 bg-[#1c1c1c] border border-[#c59d5f]/30 px-3.5 py-2.5 rounded font-mono text-xs sm:text-sm text-[#c59d5f] truncate select-all">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 min-w-0">
+            <div className="flex-1 min-w-0 bg-[#1c1c1c] border border-[#c59d5f]/30 px-3.5 py-2.5 rounded font-mono text-xs sm:text-sm text-[#c59d5f] truncate select-all">
               {fullSecretUrl}
             </div>
 
             <button
               type="button"
               onClick={copyToClipboard}
-              className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded bg-[#c59d5f] hover:bg-[#b08745] text-black font-semibold text-xs transition-all cursor-pointer active:scale-95 shrink-0"
+              className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded bg-[#c59d5f] hover:bg-[#b08745] text-black font-semibold text-xs transition-all cursor-pointer active:scale-95 shrink-0 min-h-[38px]"
             >
               {copiedLink ? <Check size={14} /> : <Copy size={14} />}
               <span>{copiedLink ? 'Copiat!' : 'Copiază Link'}</span>
@@ -223,12 +223,12 @@ export default function SecurityManager() {
       </div>
 
       {/* 2. Secțiune Schimbare Parolă */}
-      <div className="bg-[#181818] border border-white/10 rounded-sm p-6 sm:p-8 shadow-xl">
-        <div className="border-b border-white/10 pb-4 mb-6">
+      <div className="bg-[#181818] border border-white/10 rounded-sm p-4 sm:p-8 shadow-xl w-full">
+        <div className="border-b border-white/10 pb-4 mb-5 sm:mb-6">
           <div className="flex items-center gap-2 text-[#c59d5f] text-xs font-semibold uppercase tracking-wider mb-1">
             <KeyRound size={15} /> Securitate Parolă
           </div>
-          <h3 className="font-serif text-2xl font-bold text-white">
+          <h3 className="font-serif text-xl sm:text-2xl font-bold text-white">
             Setări Parolă Administrator
           </h3>
           <p className="text-xs text-gray-400 mt-1 font-light">
@@ -320,12 +320,12 @@ export default function SecurityManager() {
       </div>
 
       {/* 3. Secțiune Stare Bază de Date & Conexiune Supabase */}
-      <div className="bg-[#181818] border border-white/10 rounded-sm p-6 sm:p-8 shadow-xl">
-        <div className="border-b border-white/10 pb-4 mb-6">
+      <div className="bg-[#181818] border border-white/10 rounded-sm p-4 sm:p-8 shadow-xl w-full">
+        <div className="border-b border-white/10 pb-4 mb-5 sm:mb-6">
           <div className="flex items-center gap-2 text-[#c59d5f] text-xs font-semibold uppercase tracking-wider mb-1">
             <Database size={15} /> Bază de Date & Sincronizare Cloud
           </div>
-          <h3 className="font-serif text-2xl font-bold text-white">
+          <h3 className="font-serif text-xl sm:text-2xl font-bold text-white">
             Conexiune Supabase (Cloud)
           </h3>
           <p className="text-xs text-gray-400 mt-1 font-light leading-relaxed">
@@ -333,21 +333,21 @@ export default function SecurityManager() {
           </p>
         </div>
 
-        <div className="p-4 rounded bg-[#141414] border border-white/10 space-y-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center border ${
+        <div className="p-3.5 sm:p-4 rounded bg-[#141414] border border-white/10 space-y-4 w-full">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 min-w-0">
+            <div className="flex items-center gap-3 min-w-0 flex-1">
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center border shrink-0 ${
                 isSupabaseConfigured
                   ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-400'
                   : 'bg-amber-950/40 border-amber-500/40 text-amber-400'
               }`}>
                 <Activity size={20} className={isSupabaseConfigured ? 'animate-pulse' : ''} />
               </div>
-              <div>
-                <span className="text-white text-sm font-semibold block">
+              <div className="min-w-0 flex-1">
+                <span className="text-white text-sm font-semibold block truncate">
                   Stare: {isSupabaseConfigured ? 'Configurat & Activ' : 'Mod Offline / Stocare Locală'}
                 </span>
-                <span className="text-gray-400 text-xs font-light block font-mono text-[11px] truncate max-w-sm">
+                <span className="text-gray-400 text-xs font-light block font-mono text-[11px] truncate max-w-full">
                   {isSupabaseConfigured
                     ? 'Proiect: fivxdfzzvoakmpzmbohx.supabase.co'
                     : 'Cheile Supabase nu au fost detectate în mediu.'}

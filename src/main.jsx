@@ -4,7 +4,14 @@ import App from './App';
 import './styles/index.css';
 import { registerSW } from 'virtual:pwa-register';
 
-// Înregistrare Service Worker PWA pentru suport offline și instalare
+// Previne complet bannerul și promptul automat de instalare PWA pe Android/Chrome/Edge
+if (typeof window !== 'undefined') {
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+  });
+}
+
+// Înregistrare Service Worker PWA pentru suport offline și performanță
 registerSW({ immediate: true });
 
 ReactDOM.createRoot(document.getElementById('root')).render(

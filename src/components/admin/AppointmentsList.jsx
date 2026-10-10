@@ -51,9 +51,9 @@ export default function AppointmentsList({ appointments = [], onUpdateStatus, on
   };
 
   return (
-    <div className="bg-[#181818] border border-white/10 rounded-sm overflow-hidden shadow-xl">
+    <div className="bg-[#181818] border border-white/10 rounded-sm overflow-hidden shadow-xl w-full">
       {/* Header & Date Filter */}
-      <div className="p-5 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#141414]">
+      <div className="p-4 sm:p-5 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 bg-[#141414]">
         <div>
           <h3 className="font-serif text-xl font-bold text-white">
             Programări
@@ -63,7 +63,7 @@ export default function AppointmentsList({ appointments = [], onUpdateStatus, on
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Filter size={15} className="text-[#c59d5f]" />
           <span className="text-xs text-gray-400 hidden sm:inline">Selectează ziua:</span>
           <input
@@ -84,7 +84,7 @@ export default function AppointmentsList({ appointments = [], onUpdateStatus, on
       </div>
 
       {/* Mobile Card View (< md) */}
-      <div className="md:hidden divide-y divide-white/5">
+      <div className="md:hidden divide-y divide-white/5 w-full">
         {filtered.length === 0 ? (
           <div className="py-12 px-4 text-center text-gray-500 font-light text-xs">
             {filterDate
@@ -93,10 +93,10 @@ export default function AppointmentsList({ appointments = [], onUpdateStatus, on
           </div>
         ) : (
           filtered.map((app) => (
-            <div key={app.id} className="p-4 space-y-3 bg-[#181818] hover:bg-[#1c1c1c] transition-colors">
+            <div key={app.id} className="p-3.5 sm:p-4 space-y-3 bg-[#181818] hover:bg-[#1c1c1c] transition-colors w-full">
               {/* Header Card: Ora + Dată + Status */}
-              <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <div className="px-2.5 py-1 rounded bg-[#c59d5f]/15 border border-[#c59d5f]/30 text-[#c59d5f] font-mono font-bold text-xs">
                     {app.startTime || app.time} {app.endTime ? `– ${app.endTime}` : ''}
                   </div>
@@ -108,19 +108,19 @@ export default function AppointmentsList({ appointments = [], onUpdateStatus, on
               </div>
 
               {/* Informații Client & Serviciu */}
-              <div className="flex items-start justify-between gap-3 pt-1">
-                <div>
-                  <h4 className="font-serif text-base font-bold text-white leading-snug">
+              <div className="flex items-start justify-between gap-3 pt-1 min-w-0">
+                <div className="min-w-0 flex-1">
+                  <h4 className="font-serif text-base font-bold text-white leading-snug break-words">
                     {app.customerName || app.clientName}
                   </h4>
                   <a
                     href={`tel:${app.customerPhone || app.clientPhone}`}
-                    className="inline-flex items-center gap-1 text-xs text-[#c59d5f] hover:underline font-mono mt-0.5"
+                    className="inline-flex items-center gap-1 text-xs text-[#c59d5f] hover:underline font-mono mt-0.5 break-all"
                   >
                     📞 {app.customerPhone || app.clientPhone}
                   </a>
                   {(app.customerEmail || app.clientEmail) && (
-                    <p className="text-[11px] text-gray-400 truncate max-w-[200px]">
+                    <p className="text-[11px] text-gray-400 truncate max-w-full break-all">
                       {app.customerEmail || app.clientEmail}
                     </p>
                   )}
@@ -141,7 +141,7 @@ export default function AppointmentsList({ appointments = [], onUpdateStatus, on
 
               {/* Notițe dacă există */}
               {app.notes && (
-                <div className="p-2 bg-[#121212] border border-white/5 rounded text-[11px] text-gray-400 italic">
+                <div className="p-2 bg-[#121212] border border-white/5 rounded text-[11px] text-gray-400 italic break-words">
                   "{app.notes}"
                 </div>
               )}

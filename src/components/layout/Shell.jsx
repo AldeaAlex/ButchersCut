@@ -13,7 +13,7 @@ export default function Shell({ children, onNavigate }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#111111] text-[#f4f1ec] flex flex-col font-sans selection:bg-[#c59d5f] selection:text-black">
+    <div className="min-h-screen bg-[#111111] text-[#f4f1ec] flex flex-col font-sans selection:bg-[#c59d5f] selection:text-black w-full max-w-full overflow-x-hidden">
       {/* Header cu sigla poziționată perfect pe mijloc: BUTCHER'S CUT */}
       <header className="sticky top-0 z-40 bg-[#141414]/95 backdrop-blur-md border-b border-white/10 px-4 py-3 sm:px-6 sm:py-3.5">
         <div className="max-w-5xl mx-auto flex items-center justify-center">
@@ -40,7 +40,7 @@ export default function Shell({ children, onNavigate }) {
       </header>
 
       {/* Main Page Content */}
-      <main className="flex-1 flex flex-col">
+      <main className="flex-1 flex flex-col w-full max-w-full overflow-x-hidden">
         {children}
       </main>
 

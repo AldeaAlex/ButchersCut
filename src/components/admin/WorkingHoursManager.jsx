@@ -354,13 +354,13 @@ export default function WorkingHoursManager({ workingHours = [], onSaveWorkingHo
                         return (
                           <div
                             key={b.id || bIdx}
-                            className="flex items-center justify-between gap-2 bg-[#161616] border border-white/10 rounded px-2.5 py-2 text-xs"
+                            className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 bg-[#161616] border border-white/10 rounded px-2.5 py-2 text-xs"
                           >
                             <span className="text-[10px] text-gray-400 uppercase tracking-wider shrink-0 font-medium">
                               Pauză #{bIdx + 1}
                             </span>
 
-                            <div className="flex items-center gap-1.5 flex-1 max-w-[220px] justify-center">
+                            <div className="flex items-center gap-1.5 flex-1 min-w-[170px] max-w-[220px] justify-center">
                               <input
                                 type="time"
                                 required
@@ -378,20 +378,22 @@ export default function WorkingHoursManager({ workingHours = [], onSaveWorkingHo
                               />
                             </div>
 
-                            {durMins > 0 && (
-                              <span className="text-[10px] text-[#c59d5f] font-mono shrink-0 hidden sm:inline">
-                                {durMins} min
-                              </span>
-                            )}
+                            <div className="flex items-center gap-2 shrink-0 ml-auto sm:ml-0">
+                              {durMins > 0 && (
+                                <span className="text-[10px] text-[#c59d5f] font-mono shrink-0">
+                                  {durMins} min
+                                </span>
+                              )}
 
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteBreak(day.dayOfWeek, b.id)}
-                              className="text-gray-500 hover:text-red-400 p-1.5 rounded hover:bg-white/5 transition-colors cursor-pointer shrink-0"
-                              title="Șterge această pauză"
-                            >
-                              <Trash2 size={13} />
-                            </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteBreak(day.dayOfWeek, b.id)}
+                                className="text-gray-500 hover:text-red-400 p-1.5 rounded hover:bg-white/5 transition-colors cursor-pointer shrink-0"
+                                title="Șterge această pauză"
+                              >
+                                <Trash2 size={13} />
+                              </button>
+                            </div>
                           </div>
                         );
                       })}

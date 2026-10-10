@@ -84,7 +84,7 @@ export default function AdminLogin({ onLoginSuccess, onBack }) {
                   setPassword(e.target.value);
                   if (error) setError('');
                 }}
-                className="w-full bg-[#121212] border border-white/10 rounded-sm py-3 px-4 pr-11 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#c59d5f] transition-colors"
+                className="w-full bg-[#121212] border border-white/10 rounded-sm py-3 px-4 pr-11 text-base sm:text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#c59d5f] transition-colors min-h-[48px]"
               />
               <button
                 type="button"
@@ -100,7 +100,7 @@ export default function AdminLogin({ onLoginSuccess, onBack }) {
           <PrimaryButton
             type="submit"
             size="md"
-            className="w-full justify-center py-3 text-xs tracking-[0.2em]"
+            className="w-full justify-center py-3 text-xs tracking-[0.2em] min-h-[48px]"
           >
             <Lock size={15} className="mr-2" /> AUTENTIFICARE
           </PrimaryButton>

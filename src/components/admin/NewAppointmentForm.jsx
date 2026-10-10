@@ -85,9 +85,9 @@ export default function NewAppointmentForm({
   };
 
   return (
-    <div className="bg-[#181818] border border-white/10 rounded-sm p-6 sm:p-8 shadow-xl max-w-2xl mx-auto space-y-6">
+    <div className="bg-[#181818] border border-white/10 rounded-sm p-4 sm:p-8 shadow-xl max-w-2xl mx-auto space-y-5 sm:space-y-6 w-full">
       <div className="border-b border-white/10 pb-4">
-        <h3 className="font-serif text-2xl font-bold text-white">
+        <h3 className="font-serif text-xl sm:text-2xl font-bold text-white">
           Programează client
         </h3>
         <p className="text-xs text-gray-400 mt-1 font-light">
@@ -96,7 +96,7 @@ export default function NewAppointmentForm({
       </div>
 
       {savedSuccess ? (
-        <div className="p-8 text-center space-y-3 bg-emerald-950/40 border border-emerald-800/50 rounded-sm">
+        <div className="p-6 sm:p-8 text-center space-y-3 bg-emerald-950/40 border border-emerald-800/50 rounded-sm">
           <CheckCircle2 size={36} className="text-emerald-400 mx-auto" />
           <h4 className="font-serif text-lg font-bold text-white">Programare salvată cu succes!</h4>
           <p className="text-xs text-gray-300">Programarea a fost adăugată în calendar.</p>
@@ -112,7 +112,7 @@ export default function NewAppointmentForm({
               value={serviceId}
               onChange={(e) => setServiceId(e.target.value)}
               required
-              className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-sm text-white focus:outline-none focus:border-[#c59d5f] cursor-pointer"
+              className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-base sm:text-sm text-white focus:outline-none focus:border-[#c59d5f] cursor-pointer min-h-[44px]"
             >
               {services.map((s) => (
                 <option key={s.id} value={s.id}>
@@ -134,7 +134,7 @@ export default function NewAppointmentForm({
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                   required
-                  className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-sm text-white focus:outline-none focus:border-[#c59d5f] cursor-pointer"
+                  className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-base sm:text-sm text-white focus:outline-none focus:border-[#c59d5f] cursor-pointer min-h-[44px]"
                 />
               </div>
             </div>
@@ -148,7 +148,7 @@ export default function NewAppointmentForm({
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
                 required
-                className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-sm text-white focus:outline-none focus:border-[#c59d5f] cursor-pointer"
+                className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-base sm:text-sm text-white focus:outline-none focus:border-[#c59d5f] cursor-pointer min-h-[44px]"
               />
 
               {time && (
@@ -208,7 +208,7 @@ export default function NewAppointmentForm({
                 enterKeyHint="next"
                 value={clientName}
                 onChange={(e) => setClientName(e.target.value)}
-                className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-sm text-white focus:outline-none focus:border-[#c59d5f] min-h-[44px]"
+                className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-base sm:text-sm text-white focus:outline-none focus:border-[#c59d5f] min-h-[48px]"
               />
             </div>
 
@@ -225,7 +225,7 @@ export default function NewAppointmentForm({
                 enterKeyHint="next"
                 value={clientPhone}
                 onChange={(e) => setClientPhone(e.target.value)}
-                className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-sm text-white focus:outline-none focus:border-[#c59d5f] min-h-[44px]"
+                className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-base sm:text-sm text-white focus:outline-none focus:border-[#c59d5f] min-h-[48px]"
               />
             </div>
           </div>
@@ -242,7 +242,7 @@ export default function NewAppointmentForm({
               enterKeyHint="next"
               value={clientEmail}
               onChange={(e) => setClientEmail(e.target.value)}
-              className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-sm text-white focus:outline-none focus:border-[#c59d5f] min-h-[44px]"
+              className="w-full bg-[#222222] border border-white/10 rounded-sm py-2.5 px-3.5 text-base sm:text-sm text-white focus:outline-none focus:border-[#c59d5f] min-h-[48px]"
             />
           </div>
 
@@ -256,7 +256,7 @@ export default function NewAppointmentForm({
               enterKeyHint="done"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-[#222222] border border-white/10 rounded-sm p-3 text-sm text-white focus:outline-none focus:border-[#c59d5f]"
+              className="w-full bg-[#222222] border border-white/10 rounded-sm p-3 text-base sm:text-sm text-white focus:outline-none focus:border-[#c59d5f]"
             />
           </div>
 
