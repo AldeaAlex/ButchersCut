@@ -1,11 +1,25 @@
 import React, { useState } from 'react';
-import { Lock, ShieldCheck, KeyRound, Check, RefreshCw } from 'lucide-react';
+import {
+  Lock,
+  ShieldCheck,
+  KeyRound,
+  Check,
+  RefreshCw,
+  EyeOff,
+  Copy,
+  Smartphone,
+  ExternalLink
+} from 'lucide-react';
 import PrimaryButton from '../common/PrimaryButton';
 import {
   DEFAULT_ADMIN_PASSWORD,
+  DEFAULT_SECRET_ADMIN_SLUG,
   getAdminPassword,
   setAdminPassword,
-  resetAdminPasswordToDefault
+  resetAdminPasswordToDefault,
+  getSecretAdminSlug,
+  setSecretAdminSlug,
+  resetSecretAdminSlugToDefault
 } from '../../config/security';
 
 export default function SecurityManager() {
@@ -14,8 +28,17 @@ export default function SecurityManager() {
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
+  // Secret slug management
+  const [secretSlug, setSecretSlug] = useState(getSecretAdminSlug);
+  const [slugSuccessMsg, setSlugSuccessMsg] = useState('');
+  const [copiedLink, setCopiedLink] = useState(false);
+
   const currentPass = getAdminPassword();
-  const isCustom = currentPass !== DEFAULT_ADMIN_PASSWORD;
+  const isCustomPass = currentPass !== DEFAULT_ADMIN_PASSWORD;
+  const isCustomSlug = secretSlug !== DEFAULT_SECRET_ADMIN_SLUG;
+
+  const originUrl = typeof window !== 'undefined' ? window.location.origin : 'https://butcherscut.ro';
+  const fullSecretUrl = `${originUrl}/${secretSlug}`;
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -36,7 +59,7 @@ export default function SecurityManager() {
     setTimeout(() => setSuccessMsg(''), 4000);
   };
 
-  const handleReset = () => {
+  const handleResetPassword = () => {
     if (window.confirm('Sigur dorești să resetezi parola la valoarea prestabilită din cod?')) {
       resetAdminPasswordToDefault();
       setSuccessMsg('Parola a fost resetată la valoarea prestabilită din cod.');
@@ -45,12 +68,133 @@ export default function SecurityManager() {
     }
   };
 
+  const handleSaveSlug = (e) => {
+    e.preventDefault();
+    if (!secretSlug.trim()) {
+      return;
+    }
+    setSecretAdminSlug(secretSlug);
+    setSlugSuccessMsg('Linkul secret a fost actualizat cu succes!');
+    setTimeout(() => setSlugSuccessMsg(''), 4000);
+  };
+
+  const handleResetSlug = () => {
+    if (window.confirm('Sigur dorești să resetezi linkul secret la valoarea prestabilită?')) {
+      resetSecretAdminSlugToDefault();
+      setSecretSlug(DEFAULT_SECRET_ADMIN_SLUG);
+      setSlugSuccessMsg('Linkul a fost resetat la valoarea prestabilită.');
+      setTimeout(() => setSlugSuccessMsg(''), 4000);
+    }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(fullSecretUrl);
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2500);
+  };
+
   return (
     <div className="space-y-6">
+      {/* 1. Secțiune Link Secret Anti-Detectare */}
       <div className="bg-[#181818] border border-white/10 rounded-sm p-6 sm:p-8 shadow-xl">
         <div className="border-b border-white/10 pb-4 mb-6">
           <div className="flex items-center gap-2 text-[#c59d5f] text-xs font-semibold uppercase tracking-wider mb-1">
-            <KeyRound size={15} /> Securitate Panou
+            <EyeOff size={15} /> Protecție Acces & Ascundere Panou
+          </div>
+          <h3 className="font-serif text-2xl font-bold text-white">
+            Link Secret de Acces (Anti-Clienți)
+          </h3>
+          <p className="text-xs text-gray-400 mt-1 font-light leading-relaxed">
+            Pentru a împiedica clienții să găsească panoul, ruta generică <code className="text-red-400 font-mono">/admin</code> este dezactivată și redirecționează pe prima pagină. Panoul poate fi accesat doar prin linkul tău secret sau gestul discret de pe mobil.
+          </p>
+        </div>
+
+        {slugSuccessMsg && (
+          <div className="mb-5 p-3 rounded bg-emerald-950/40 border border-emerald-800/60 text-emerald-300 text-xs flex items-center gap-2">
+            <Check size={16} className="text-emerald-400 shrink-0" />
+            <span>{slugSuccessMsg}</span>
+          </div>
+        )}
+
+        {/* Display Current Secret Link */}
+        <div className="p-4 rounded bg-[#141414] border border-white/10 space-y-3 mb-6">
+          <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold block">
+            Adresa secretă a panoului tău:
+          </span>
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+            <div className="flex-1 bg-[#1c1c1c] border border-[#c59d5f]/30 px-3.5 py-2.5 rounded font-mono text-xs sm:text-sm text-[#c59d5f] truncate select-all">
+              {fullSecretUrl}
+            </div>
+
+            <button
+              type="button"
+              onClick={copyToClipboard}
+              className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded bg-[#c59d5f] hover:bg-[#b08745] text-black font-semibold text-xs transition-all cursor-pointer active:scale-95 shrink-0"
+            >
+              {copiedLink ? <Check size={14} /> : <Copy size={14} />}
+              <span>{copiedLink ? 'Copiat!' : 'Copiază Link'}</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Formular Modificare Slug Secret */}
+        <form onSubmit={handleSaveSlug} className="space-y-4 max-w-md">
+          <div>
+            <label className="block text-xs uppercase tracking-wider text-gray-300 font-medium mb-1.5">
+              Personalizează calea secretă
+            </label>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-500 font-mono text-xs select-none">/</span>
+              <input
+                type="text"
+                required
+                placeholder="butcher-secret-portal"
+                value={secretSlug}
+                onChange={(e) => setSecretSlug(e.target.value)}
+                className="w-full bg-[#222222] border border-white/10 rounded-sm py-2 px-3 text-sm text-white font-mono focus:outline-none focus:border-[#c59d5f]"
+              />
+            </div>
+            <p className="text-[11px] text-gray-500 mt-1">
+              Schimbă acest cuvânt cheie dacă vrei un link doar de tine știut.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <PrimaryButton type="submit" size="sm" className="tracking-wider text-xs">
+              SALVEAZĂ CALEA SECRETĂ
+            </PrimaryButton>
+
+            {isCustomSlug && (
+              <button
+                type="button"
+                onClick={handleResetSlug}
+                className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-[#c59d5f] transition-colors cursor-pointer py-1.5 px-3 rounded bg-white/5"
+              >
+                <RefreshCw size={13} /> Reset
+              </button>
+            )}
+          </div>
+        </form>
+
+        {/* Gestul Secret pe Mobil */}
+        <div className="mt-6 pt-5 border-t border-white/5 flex items-start gap-3 bg-[#161616] p-4 rounded-md">
+          <Smartphone size={22} className="text-[#c59d5f] shrink-0 mt-0.5" />
+          <div className="text-xs space-y-1">
+            <span className="font-semibold text-white block">
+              Acces rapid pe mobil (fără tastare link)
+            </span>
+            <p className="text-gray-400 font-light leading-relaxed">
+              Când deschizi site-ul pe telefon, atinge <strong>sigla Butcher's Cut</strong> din antet de <strong>5 ori rapid</strong> (sau ține apăsat 3 secunde pe ea). Panoul se va deschide instantaneu fără ca un client obișnuit să bănuiască existența lui.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. Secțiune Schimbare Parolă */}
+      <div className="bg-[#181818] border border-white/10 rounded-sm p-6 sm:p-8 shadow-xl">
+        <div className="border-b border-white/10 pb-4 mb-6">
+          <div className="flex items-center gap-2 text-[#c59d5f] text-xs font-semibold uppercase tracking-wider mb-1">
+            <KeyRound size={15} /> Securitate Parolă
           </div>
           <h3 className="font-serif text-2xl font-bold text-white">
             Setări Parolă Administrator
@@ -68,19 +212,19 @@ export default function SecurityManager() {
             </div>
             <div>
               <span className="text-white text-sm font-semibold block">
-                Stare Parolă: {isCustom ? 'Personalizată' : 'Prestabilită'}
+                Stare Parolă: {isCustomPass ? 'Personalizată' : 'Prestabilită'}
               </span>
               <span className="text-gray-400 text-xs font-light block">
-                {isCustom
+                {isCustomPass
                   ? 'Folosești o parolă personalizată salvată în browser.'
                   : 'Folosești parola prestabilită din codul aplicației (src/config/security.js).'}
               </span>
             </div>
           </div>
 
-          {isCustom && (
+          {isCustomPass && (
             <button
-              onClick={handleReset}
+              onClick={handleResetPassword}
               className="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-[#c59d5f] transition-colors cursor-pointer py-1.5 px-3 rounded bg-white/5"
             >
               <RefreshCw size={13} /> Resetează la prestabilită
@@ -138,7 +282,7 @@ export default function SecurityManager() {
         <div className="mt-8 pt-5 border-t border-white/5 text-xs text-gray-400 space-y-1">
           <p className="font-semibold text-gray-300">💡 Notă tehnică:</p>
           <p>
-            Parola poate fi configurată direct și în fișierul <code className="text-[#c59d5f]">src/config/security.js</code> prin modificarea constantei <code className="text-[#c59d5f]">DEFAULT_ADMIN_PASSWORD</code>.
+            Parola și slug-ul secret pot fi configurate direct și în fișierul <code className="text-[#c59d5f]">src/config/security.js</code>.
           </p>
         </div>
       </div>

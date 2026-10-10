@@ -50,6 +50,7 @@ export function getAvailableSlotsForDate({
   const workStart = timeStringToMinutes(workingHour.startTime);
   const workEnd = timeStringToMinutes(workingHour.endTime);
   const serviceDuration = Number(service.durationMinutes || 30);
+  const breaks = workingHour.breaks || [];
 
   // Filtrează programările active din acea zi (care nu sunt anulate)
   const activeAppointmentsOnDate = existingAppointments.filter(app => {
@@ -61,9 +62,21 @@ export function getAvailableSlotsForDate({
   for (let slotStart = workStart; slotStart + serviceDuration <= workEnd; slotStart += slotStep) {
     const slotEnd = slotStart + serviceDuration;
 
-    // Verifică suprapunerea cu programările existente
+    // 1. Verifică suprapunerea cu pauzele de lucru stabilite de frizer
+    const hasBreakOverlap = breaks.some(b => {
+      if (!b.startTime || !b.endTime) return false;
+      const bStart = timeStringToMinutes(b.startTime);
+      const bEnd = timeStringToMinutes(b.endTime);
+      return intervalsOverlap(slotStart, slotEnd, bStart, bEnd);
+    });
+
+    if (hasBreakOverlap) {
+      continue;
+    }
+
+    // 2. Verifică suprapunerea cu programările existente
     const hasOverlap = activeAppointmentsOnDate.some(app => {
-      const appStart = timeStringToMinutes(app.time);
+      const appStart = timeStringToMinutes(app.time || app.startTime);
       const appDuration = Number(app.durationMinutes || (app.service?.includes('barbă') && app.service?.includes('Tuns') ? 45 : 30));
       const appEnd = appStart + appDuration;
 
@@ -98,6 +111,6 @@ export function validateAppointmentSlot({ service, date, startTime, existingAppo
     isAvailable,
     message: isAvailable
       ? "Ora este disponibilă."
-      : "Ora selectată se suprapune cu altă programare sau nu mai este disponibilă."
+      : "Ora selectată se suprapune cu o pauză, cu o altă programare sau este în afara programului."
   };
 }

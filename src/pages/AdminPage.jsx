@@ -162,6 +162,8 @@ export default function AdminPage({
         {activeTab === 'new-appointment' && (
           <NewAppointmentForm
             services={services}
+            workingHours={workingHours}
+            existingAppointments={appointments}
             onSaveAppointment={onAddAppointment}
             onSuccess={() => setActiveTab('appointments')}
           />

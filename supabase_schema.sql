@@ -46,6 +46,7 @@ create table if not exists public.working_hours (
     is_working_day boolean not null default true,
     start_time text,
     end_time text,
+    breaks jsonb default '[]'::jsonb,
     updated_at timestamp with time zone default timezone('utc'::text, now())
 );
 

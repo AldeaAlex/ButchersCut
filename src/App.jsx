@@ -18,6 +18,7 @@ import {
   deleteServiceDb,
   saveWorkingHoursDb
 } from './services/supabaseClient';
+import { isSecretAdminUrl, getSecretAdminSlug } from './config/security';
 
 const STORAGE_KEYS = {
   SERVICES: 'butchers_services',
@@ -68,7 +69,20 @@ export default function App() {
   const getPageFromUrl = () => {
     const path = window.location.pathname.replace(/\/+$/, '');
     const hash = window.location.hash;
-    if (path === '/admin' || hash === '#admin') return 'admin';
+    const search = window.location.search;
+
+    // Verifică dacă adresa curentă este ruta secretă de administrator
+    if (isSecretAdminUrl(path, search, hash)) {
+      return 'admin';
+    }
+
+    // Dacă un client încearcă manual /admin sau #admin,
+    // îl redirecționăm imediat la pagina principală pentru a ascunde existența rutei
+    if (path === '/admin' || hash === '#admin') {
+      window.history.replaceState({}, '', '/');
+      return 'hero';
+    }
+
     if (path === '/programare' || hash === '#booking') return 'booking';
     return 'hero';
   };
@@ -95,7 +109,7 @@ export default function App() {
       setSelectedInitialServiceId(serviceId);
     }
     let newPath = '/';
-    if (newPage === 'admin') newPath = '/admin';
+    if (newPage === 'admin') newPath = '/' + getSecretAdminSlug();
     if (newPage === 'booking') newPath = '/programare';
     
     if (window.location.pathname !== newPath) {
@@ -212,7 +226,8 @@ export default function App() {
               label: h.label,
               isWorkingDay: h.is_working_day,
               startTime: h.start_time,
-              endTime: h.end_time
+              endTime: h.end_time,
+              breaks: h.breaks || []
             }))
           );
         }
