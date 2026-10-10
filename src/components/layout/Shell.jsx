@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Phone, ShieldCheck, FileText, Cookie, Download } from 'lucide-react';
+import { Phone, ShieldCheck, FileText, Cookie } from 'lucide-react';
 import ButchersCutLogo from '../common/ButchersCutLogo';
 import LegalModal from '../legal/LegalModal';
-import PwaInstallPrompt from '../pwa/PwaInstallPrompt';
 
 export default function Shell({ children, onNavigate }) {
   const [legalModalOpen, setLegalModalOpen] = useState(false);
@@ -13,15 +12,11 @@ export default function Shell({ children, onNavigate }) {
     setLegalModalOpen(true);
   };
 
-  const triggerInstall = () => {
-    window.dispatchEvent(new CustomEvent('open-pwa-install'));
-  };
-
   return (
     <div className="min-h-screen bg-[#111111] text-[#f4f1ec] flex flex-col font-sans selection:bg-[#c59d5f] selection:text-black">
-      {/* Header cu sigla poziționată pe mijloc: Cap de porc line art cu foarfecă în interior + BUTCHER'S CUT */}
-      <header className="sticky top-0 z-40 bg-[#141414]/95 backdrop-blur-md border-b border-white/10 px-4 py-3 sm:px-6 sm:py-4">
-        <div className="max-w-5xl mx-auto relative flex items-center justify-center">
+      {/* Header cu sigla poziționată perfect pe mijloc: BUTCHER'S CUT */}
+      <header className="sticky top-0 z-40 bg-[#141414]/95 backdrop-blur-md border-b border-white/10 px-4 py-3 sm:px-6 sm:py-3.5">
+        <div className="max-w-5xl mx-auto flex items-center justify-center">
           {/* Brand Logo Centrat */}
           <button
             onClick={() => onNavigate && onNavigate('hero')}
@@ -29,9 +24,9 @@ export default function Shell({ children, onNavigate }) {
             title="Acasă - Butcher's Cut"
           >
             {/* Emblema Line Art: Cap de porc cu foarfecă */}
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#c59d5f]/50 flex items-center justify-center bg-[#181818] group-hover:border-[#c59d5f] group-hover:bg-[#1f1f1f] transition-all shadow-md shrink-0">
-              <ButchersCutLogo size={28} className="text-[#c59d5f] sm:hidden" />
-              <ButchersCutLogo size={34} className="text-[#c59d5f] hidden sm:block" />
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-[#c59d5f]/50 flex items-center justify-center bg-[#181818] group-hover:border-[#c59d5f] group-hover:bg-[#1f1f1f] transition-all shadow-md shrink-0">
+              <ButchersCutLogo size={26} className="text-[#c59d5f] sm:hidden" />
+              <ButchersCutLogo size={30} className="text-[#c59d5f] hidden sm:block" />
             </div>
 
             {/* Numele Brandului: Doar BUTCHER'S CUT */}
@@ -40,16 +35,6 @@ export default function Shell({ children, onNavigate }) {
                 BUTCHER'S CUT
               </span>
             </div>
-          </button>
-
-          {/* Buton instalare PWA direct din Header */}
-          <button
-            onClick={triggerInstall}
-            className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-full border border-[#c59d5f]/40 hover:border-[#c59d5f] bg-[#1a1a1a] text-[#c59d5f] hover:text-black hover:bg-[#c59d5f] text-[10px] sm:text-xs font-semibold uppercase tracking-wider transition-all active:scale-95 cursor-pointer shadow"
-            title="Instalează aplicația pe telefon"
-          >
-            <Download size={13} />
-            <span className="hidden sm:inline">Instalează</span>
           </button>
         </div>
       </header>
@@ -140,9 +125,6 @@ export default function Shell({ children, onNavigate }) {
         onClose={() => setLegalModalOpen(false)}
         initialTab={legalModalTab}
       />
-
-      {/* PwaInstallPrompt complet (ca în A Squared Studio) */}
-      <PwaInstallPrompt />
     </div>
   );
 }

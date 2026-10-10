@@ -59,7 +59,7 @@ export default function CustomerForm({
               autoCapitalize="words"
               value={customerData.name}
               onChange={(e) => onChangeCustomer({ ...customerData, name: e.target.value })}
-              className="w-full bg-[#141414] border border-white/10 rounded-md py-3 pl-10 pr-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#c59d5f] transition-colors min-h-[46px]"
+              className="w-full bg-[#141414] border border-white/10 rounded-md py-3 pl-10 pr-4 text-base sm:text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#c59d5f] transition-colors min-h-[48px]"
             />
           </div>
         </div>
@@ -85,7 +85,7 @@ export default function CustomerForm({
               inputMode="tel"
               value={customerData.phone}
               onChange={(e) => onChangeCustomer({ ...customerData, phone: e.target.value })}
-              className="w-full bg-[#141414] border border-white/10 rounded-md py-3 pl-10 pr-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#c59d5f] transition-colors min-h-[46px]"
+              className="w-full bg-[#141414] border border-white/10 rounded-md py-3 pl-10 pr-4 text-base sm:text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#c59d5f] transition-colors min-h-[48px]"
             />
           </div>
         </div>
@@ -106,7 +106,7 @@ export default function CustomerForm({
               placeholder="Ex: Tuns scurt pe margini, contur barbă..."
               value={customerData.notes}
               onChange={(e) => onChangeCustomer({ ...customerData, notes: e.target.value })}
-              className="w-full bg-[#141414] border border-white/10 rounded-md p-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#c59d5f] transition-colors"
+              className="w-full bg-[#141414] border border-white/10 rounded-md p-3 text-base sm:text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#c59d5f] transition-colors"
             />
           </div>
         </div>

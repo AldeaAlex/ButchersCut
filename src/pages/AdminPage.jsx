@@ -81,17 +81,17 @@ export default function AdminPage({
         </div>
 
         {/* Quick Actions & Logout */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
           <button
             onClick={() => setActiveTab('new-appointment')}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#c59d5f] hover:bg-[#b08745] text-black font-bold text-xs uppercase tracking-wider transition-all cursor-pointer shadow-md"
+            className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full bg-[#c59d5f] hover:bg-[#b08745] text-black font-bold text-xs uppercase tracking-wider transition-all cursor-pointer shadow-md min-h-[38px]"
           >
             <Plus size={15} /> Programează Client
           </button>
 
           <button
             onClick={handleLogout}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-white/20 hover:border-red-500/50 hover:bg-red-950/30 text-gray-300 hover:text-red-300 font-semibold text-xs uppercase tracking-wider transition-all cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2 rounded-full border border-white/20 hover:border-red-500/50 hover:bg-red-950/30 text-gray-300 hover:text-red-300 font-semibold text-xs uppercase tracking-wider transition-all cursor-pointer min-h-[38px]"
             title="Deconectare din Panou"
           >
             <LogOut size={14} /> Deconectare

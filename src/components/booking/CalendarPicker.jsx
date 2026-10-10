@@ -72,7 +72,7 @@ export default function CalendarPicker({ selectedDate, onChangeDate }) {
           value={selectedDate}
           onChange={(e) => onChangeDate(e.target.value)}
           required
-          className="w-full bg-[#181818] border border-white/10 rounded-md py-2.5 pl-10 pr-4 text-xs sm:text-sm text-white focus:outline-none focus:border-[#c59d5f] transition-colors cursor-pointer min-h-[44px]"
+          className="w-full bg-[#181818] border border-white/10 rounded-md py-3 pl-10 pr-4 text-base sm:text-sm text-white focus:outline-none focus:border-[#c59d5f] transition-colors cursor-pointer min-h-[48px]"
         />
       </div>
     </div>
