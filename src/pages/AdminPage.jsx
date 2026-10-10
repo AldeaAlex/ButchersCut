@@ -8,6 +8,7 @@ import ServicesManager from '../components/admin/ServicesManager';
 import WorkingHoursManager from '../components/admin/WorkingHoursManager';
 import SecurityManager from '../components/admin/SecurityManager';
 import AdminLogin from '../components/admin/AdminLogin';
+import { isSupabaseConfigured } from '../services/supabaseClient';
 
 const AUTH_STORAGE_KEY = 'butchers_admin_authenticated';
 
@@ -66,6 +67,16 @@ export default function AdminPage({
             <h1 className="font-serif text-2xl sm:text-3xl font-bold text-white leading-tight">
               Dashboard Administrativ
             </h1>
+            <div className="flex items-center gap-2 mt-1">
+              <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-semibold tracking-wider uppercase border ${
+                isSupabaseConfigured
+                  ? 'bg-emerald-950/80 text-emerald-400 border-emerald-800/40'
+                  : 'bg-amber-950/80 text-amber-400 border-amber-800/40'
+              }`}>
+                <span className={`w-1.5 h-1.5 rounded-full ${isSupabaseConfigured ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
+                {isSupabaseConfigured ? 'Supabase Conectat (Cloud)' : 'Mod Local'}
+              </span>
+            </div>
           </div>
         </div>
 

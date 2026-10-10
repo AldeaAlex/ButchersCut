@@ -8,7 +8,10 @@ import {
   EyeOff,
   Copy,
   Smartphone,
-  ExternalLink
+  ExternalLink,
+  Database,
+  Activity,
+  AlertTriangle
 } from 'lucide-react';
 import PrimaryButton from '../common/PrimaryButton';
 import {
@@ -21,6 +24,12 @@ import {
   setSecretAdminSlug,
   resetSecretAdminSlugToDefault
 } from '../../config/security';
+import {
+  isSupabaseConfigured,
+  getServicesDb,
+  getAppointmentsDb,
+  getWorkingHoursDb
+} from '../../services/supabaseClient';
 
 export default function SecurityManager() {
   const [newPassword, setNewPassword] = useState('');
@@ -32,6 +41,44 @@ export default function SecurityManager() {
   const [secretSlug, setSecretSlug] = useState(getSecretAdminSlug);
   const [slugSuccessMsg, setSlugSuccessMsg] = useState('');
   const [copiedLink, setCopiedLink] = useState(false);
+
+  // Supabase test state
+  const [dbTestStatus, setDbTestStatus] = useState(null);
+  const [isTestingDb, setIsTestingDb] = useState(false);
+
+  const handleTestSupabase = async () => {
+    setIsTestingDb(true);
+    setDbTestStatus(null);
+    try {
+      if (!isSupabaseConfigured) {
+        setDbTestStatus({
+          success: false,
+          message: 'Supabase nu este configurat. Completează VITE_SUPABASE_URL și VITE_SUPABASE_ANON_KEY în fișierul .env.'
+        });
+        setIsTestingDb(false);
+        return;
+      }
+      const [services, apps, hours] = await Promise.all([
+        getServicesDb(),
+        getAppointmentsDb(),
+        getWorkingHoursDb()
+      ]);
+      setDbTestStatus({
+        success: true,
+        servicesCount: services ? services.length : 0,
+        appsCount: apps ? apps.length : 0,
+        hoursCount: hours ? hours.length : 0,
+        message: 'Conexiunea la Supabase este 100% activă și funcțională!'
+      });
+    } catch (e) {
+      setDbTestStatus({
+        success: false,
+        message: 'Eroare conexiune: ' + (e.message || 'Verifică setările Supabase.')
+      });
+    } finally {
+      setIsTestingDb(false);
+    }
+  };
 
   const currentPass = getAdminPassword();
   const isCustomPass = currentPass !== DEFAULT_ADMIN_PASSWORD;
@@ -284,6 +331,85 @@ export default function SecurityManager() {
           <p>
             Parola și slug-ul secret pot fi configurate direct și în fișierul <code className="text-[#c59d5f]">src/config/security.js</code>.
           </p>
+        </div>
+      </div>
+
+      {/* 3. Secțiune Stare Bază de Date & Conexiune Supabase */}
+      <div className="bg-[#181818] border border-white/10 rounded-sm p-6 sm:p-8 shadow-xl">
+        <div className="border-b border-white/10 pb-4 mb-6">
+          <div className="flex items-center gap-2 text-[#c59d5f] text-xs font-semibold uppercase tracking-wider mb-1">
+            <Database size={15} /> Bază de Date & Sincronizare Cloud
+          </div>
+          <h3 className="font-serif text-2xl font-bold text-white">
+            Conexiune Supabase (Cloud)
+          </h3>
+          <p className="text-xs text-gray-400 mt-1 font-light leading-relaxed">
+            Verifică în timp real dacă baza de date cloud este activă și sincronizată cu programările, serviciile și orarul tău.
+          </p>
+        </div>
+
+        <div className="p-4 rounded bg-[#141414] border border-white/10 space-y-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center border ${
+                isSupabaseConfigured
+                  ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-400'
+                  : 'bg-amber-950/40 border-amber-500/40 text-amber-400'
+              }`}>
+                <Activity size={20} className={isSupabaseConfigured ? 'animate-pulse' : ''} />
+              </div>
+              <div>
+                <span className="text-white text-sm font-semibold block">
+                  Stare: {isSupabaseConfigured ? 'Configurat & Activ' : 'Mod Offline / Stocare Locală'}
+                </span>
+                <span className="text-gray-400 text-xs font-light block font-mono text-[11px] truncate max-w-sm">
+                  {isSupabaseConfigured
+                    ? 'Proiect: fivxdfzzvoakmpzmbohx.supabase.co'
+                    : 'Cheile Supabase nu au fost detectate în mediu.'}
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleTestSupabase}
+              disabled={isTestingDb}
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded bg-[#c59d5f] hover:bg-[#b08745] disabled:opacity-50 text-black font-semibold text-xs transition-all cursor-pointer active:scale-95 shrink-0"
+            >
+              <RefreshCw size={14} className={isTestingDb ? 'animate-spin' : ''} />
+              <span>{isTestingDb ? 'Se testează...' : 'Verifică Conexiunea Acum'}</span>
+            </button>
+          </div>
+
+          {/* Rezultat Test */}
+          {dbTestStatus && (
+            <div className={`p-3.5 rounded text-xs border ${
+              dbTestStatus.success
+                ? 'bg-emerald-950/50 border-emerald-800/50 text-emerald-300'
+                : 'bg-red-950/50 border-red-800/50 text-red-300'
+            }`}>
+              <div className="flex items-center gap-2 font-semibold mb-1">
+                {dbTestStatus.success ? <Check size={16} className="text-emerald-400" /> : <AlertTriangle size={16} className="text-red-400" />}
+                <span>{dbTestStatus.message}</span>
+              </div>
+              {dbTestStatus.success && (
+                <div className="grid grid-cols-3 gap-2 mt-2 pt-2 border-t border-emerald-800/30 text-center font-mono">
+                  <div className="bg-black/30 p-1.5 rounded">
+                    <span className="block text-[10px] text-gray-400 uppercase">Servicii</span>
+                    <span className="text-sm font-bold text-white">{dbTestStatus.servicesCount}</span>
+                  </div>
+                  <div className="bg-black/30 p-1.5 rounded">
+                    <span className="block text-[10px] text-gray-400 uppercase">Zile Orar</span>
+                    <span className="text-sm font-bold text-white">{dbTestStatus.hoursCount}</span>
+                  </div>
+                  <div className="bg-black/30 p-1.5 rounded">
+                    <span className="block text-[10px] text-gray-400 uppercase">Programări</span>
+                    <span className="text-sm font-bold text-white">{dbTestStatus.appsCount}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

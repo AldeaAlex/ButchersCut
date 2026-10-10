@@ -12,23 +12,28 @@ create table if not exists public.services (
     dur text not null,
     duration_minutes integer not null default 30,
     is_active boolean not null default true,
-    created_at timestamp with time zone default timezone('utc'::text, now())
+    created_at timestamptz default now()
 );
 
 -- Activează Row Level Security
 alter table public.services enable row level security;
 
--- Politici de acces pentru Servicii (Public Read / Admin Write)
+-- Politici de acces pentru Servicii
 drop policy if exists "Permite citire publica servicii" on public.services;
 create policy "Permite citire publica servicii"
     on public.services for select
+    to anon, authenticated
     using (true);
 
 drop policy if exists "Permite modificare servicii" on public.services;
 create policy "Permite modificare servicii"
     on public.services for all
+    to anon, authenticated
     using (true)
     with check (true);
+
+-- Acordă drepturi explicite rolurilor Supabase
+grant all on table public.services to anon, authenticated, service_role;
 
 -- Date inițiale Servicii (Seed)
 insert into public.services (id, name, description, price, dur, duration_minutes, is_active)
@@ -36,10 +41,16 @@ values
     (1, 'Tuns bărbați', 'Tuns clasic sau modern cu spălat și styling inclus.', 50, '30 min', 30, true),
     (2, 'Tuns + barbă', 'Tuns complet, aranjat barbă cu prosop cald și finisare.', 80, '45 min', 45, true),
     (3, 'Aranjat barbă', 'Contur brici, scurtat, hidratare cu uleiuri speciale.', 35, '20 min', 20, true)
-on conflict (id) do nothing;
+on conflict (id) do update set
+    name = excluded.name,
+    description = excluded.description,
+    price = excluded.price,
+    dur = excluded.dur,
+    duration_minutes = excluded.duration_minutes,
+    is_active = excluded.is_active;
 
 
--- 2. Tabel Program de Lucru (Working Hours)
+-- 2. Tabel Program de Lucru & Pauze (Working Hours)
 create table if not exists public.working_hours (
     day_of_week integer primary key, -- 0 = Luni, 6 = Duminică
     label text not null,
@@ -47,33 +58,44 @@ create table if not exists public.working_hours (
     start_time text,
     end_time text,
     breaks jsonb default '[]'::jsonb,
-    updated_at timestamp with time zone default timezone('utc'::text, now())
+    updated_at timestamptz default now()
 );
+
+-- Asigură adăugarea coloanei breaks dacă tabelul a fost creat anterior
+alter table public.working_hours add column if not exists breaks jsonb default '[]'::jsonb;
 
 alter table public.working_hours enable row level security;
 
 drop policy if exists "Permite citire orar de lucru" on public.working_hours;
 create policy "Permite citire orar de lucru"
     on public.working_hours for select
+    to anon, authenticated
     using (true);
 
 drop policy if exists "Permite modificare orar de lucru" on public.working_hours;
 create policy "Permite modificare orar de lucru"
     on public.working_hours for all
+    to anon, authenticated
     using (true)
     with check (true);
 
+grant all on table public.working_hours to anon, authenticated, service_role;
+
 -- Date inițiale Orar (Seed)
-insert into public.working_hours (day_of_week, label, is_working_day, start_time, end_time)
+insert into public.working_hours (day_of_week, label, is_working_day, start_time, end_time, breaks)
 values
-    (0, 'Luni', true, '09:00', '19:00'),
-    (1, 'Marți', true, '09:00', '19:00'),
-    (2, 'Miercuri', true, '09:00', '19:00'),
-    (3, 'Joi', true, '09:00', '19:00'),
-    (4, 'Vineri', true, '09:00', '19:00'),
-    (5, 'Sâmbătă', true, '09:00', '16:00'),
-    (6, 'Duminică', false, null, null)
-on conflict (day_of_week) do nothing;
+    (0, 'Luni', true, '09:00', '19:00', '[]'::jsonb),
+    (1, 'Marți', true, '09:00', '19:00', '[]'::jsonb),
+    (2, 'Miercuri', true, '09:00', '19:00', '[]'::jsonb),
+    (3, 'Joi', true, '09:00', '19:00', '[]'::jsonb),
+    (4, 'Vineri', true, '09:00', '19:00', '[]'::jsonb),
+    (5, 'Sâmbătă', true, '09:00', '16:00', '[]'::jsonb),
+    (6, 'Duminică', false, null, null, '[]'::jsonb)
+on conflict (day_of_week) do update set
+    label = excluded.label,
+    is_working_day = excluded.is_working_day,
+    start_time = excluded.start_time,
+    end_time = excluded.end_time;
 
 
 -- 3. Tabel Programări (Appointments)
@@ -92,7 +114,7 @@ create table if not exists public.appointments (
     end_time text not null,
     notes text default '',
     status text not null default 'CONFIRMED', -- CONFIRMED, COMPLETED, CANCELLED, NO_SHOW
-    created_at timestamp with time zone default timezone('utc'::text, now())
+    created_at timestamptz default now()
 );
 
 alter table public.appointments enable row level security;
@@ -100,23 +122,31 @@ alter table public.appointments enable row level security;
 drop policy if exists "Permite citire programari" on public.appointments;
 create policy "Permite citire programari"
     on public.appointments for select
+    to anon, authenticated
     using (true);
 
 drop policy if exists "Permite adaugare programari" on public.appointments;
 create policy "Permite adaugare programari"
     on public.appointments for insert
+    to anon, authenticated
     with check (true);
 
 drop policy if exists "Permite modificare programari" on public.appointments;
 create policy "Permite modificare programari"
     on public.appointments for update
+    to anon, authenticated
     using (true)
     with check (true);
 
 drop policy if exists "Permite stergere programari" on public.appointments;
 create policy "Permite stergere programari"
     on public.appointments for delete
+    to anon, authenticated
     using (true);
 
--- Indexuri pentru căutare rapidă după dată
+-- Index pentru căutare rapidă după dată
 create index if not exists idx_appointments_date on public.appointments (date);
+
+-- Acordă drepturi explicite pe tabel și secvențe
+grant all on table public.appointments to anon, authenticated, service_role;
+grant usage, select on all sequences in schema public to anon, authenticated, service_role;
