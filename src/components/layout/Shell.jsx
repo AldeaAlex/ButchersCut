@@ -55,7 +55,7 @@ export default function Shell({ children, onNavigate }) {
       </header>
 
       {/* Main Page Content */}
-      <main className="flex-1 flex flex-col justify-center">
+      <main className="flex-1 flex flex-col">
         {children}
       </main>
 

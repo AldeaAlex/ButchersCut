@@ -51,7 +51,7 @@ export default function HeroPage({ onBook, services = [] }) {
   return (
     <div className="w-full">
       {/* Secțiunea Hero Principală */}
-      <section className="relative min-h-[calc(100svh-70px)] sm:min-h-[calc(100vh-80px)] py-8 sm:py-20 px-4 sm:px-6 flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[calc(100svh-70px)] sm:min-h-[calc(100vh-80px)] py-8 sm:py-20 px-4 sm:px-6 flex items-center justify-center">
         {/* Subtle luxury background radial glow */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(197,157,95,0.09)_0%,transparent_70%)] pointer-events-none" />
 
