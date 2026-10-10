@@ -17,60 +17,14 @@ export default function Shell({ children, onNavigate }) {
     window.dispatchEvent(new CustomEvent('open-pwa-install'));
   };
 
-  const logoTapsRef = React.useRef({ count: 0, lastTime: 0 });
-  const longPressTimerRef = React.useRef(null);
-
-  const handleLogoClick = () => {
-    const now = Date.now();
-    if (now - logoTapsRef.current.lastTime < 1800) {
-      logoTapsRef.current.count += 1;
-    } else {
-      logoTapsRef.current.count = 1;
-    }
-    logoTapsRef.current.lastTime = now;
-
-    // 5 atingeri rapide deschid portalul secret de administrare
-    if (logoTapsRef.current.count >= 5) {
-      logoTapsRef.current.count = 0;
-      if (onNavigate) {
-        onNavigate('admin');
-        return;
-      }
-    }
-
-    if (onNavigate) {
-      onNavigate('hero');
-    }
-  };
-
-  const handleTouchStart = () => {
-    longPressTimerRef.current = setTimeout(() => {
-      if (onNavigate) {
-        onNavigate('admin');
-      }
-    }, 3000);
-  };
-
-  const handleTouchEnd = () => {
-    if (longPressTimerRef.current) {
-      clearTimeout(longPressTimerRef.current);
-      longPressTimerRef.current = null;
-    }
-  };
-
   return (
     <div className="min-h-screen bg-[#111111] text-[#f4f1ec] flex flex-col font-sans selection:bg-[#c59d5f] selection:text-black">
       {/* Header cu sigla poziționată pe mijloc: Cap de porc line art cu foarfecă în interior + BUTCHER'S CUT */}
       <header className="sticky top-0 z-40 bg-[#141414]/95 backdrop-blur-md border-b border-white/10 px-4 py-3 sm:px-6 sm:py-4">
         <div className="max-w-5xl mx-auto relative flex items-center justify-center">
-          {/* Brand Logo Centrat - Gest secret: 5 atingeri rapide deschid panoul de admin */}
+          {/* Brand Logo Centrat */}
           <button
-            onClick={handleLogoClick}
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-            onMouseDown={handleTouchStart}
-            onMouseUp={handleTouchEnd}
-            onMouseLeave={handleTouchEnd}
+            onClick={() => onNavigate && onNavigate('hero')}
             className="flex items-center gap-2.5 sm:gap-3.5 group cursor-pointer text-center active:scale-95 transition-transform"
             title="Acasă - Butcher's Cut"
           >

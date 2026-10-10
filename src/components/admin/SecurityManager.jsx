@@ -7,8 +7,6 @@ import {
   RefreshCw,
   EyeOff,
   Copy,
-  Smartphone,
-  ExternalLink,
   Database,
   Activity,
   AlertTriangle
@@ -222,19 +220,6 @@ export default function SecurityManager() {
             )}
           </div>
         </form>
-
-        {/* Gestul Secret pe Mobil */}
-        <div className="mt-6 pt-5 border-t border-white/5 flex items-start gap-3 bg-[#161616] p-4 rounded-md">
-          <Smartphone size={22} className="text-[#c59d5f] shrink-0 mt-0.5" />
-          <div className="text-xs space-y-1">
-            <span className="font-semibold text-white block">
-              Acces rapid pe mobil (fără tastare link)
-            </span>
-            <p className="text-gray-400 font-light leading-relaxed">
-              Când deschizi site-ul pe telefon, atinge <strong>sigla Butcher's Cut</strong> din antet de <strong>5 ori rapid</strong> (sau ține apăsat 3 secunde pe ea). Panoul se va deschide instantaneu fără ca un client obișnuit să bănuiască existența lui.
-            </p>
-          </div>
-        </div>
       </div>
 
       {/* 2. Secțiune Schimbare Parolă */}
